@@ -1,0 +1,28 @@
+{
+  "name": "inklusiva",
+  "version": "1.0.0",
+  "description": "multi-tenant-app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests\"",
+    "tsc": "npx tsc -w",
+    "start": "nodemon dist/app.js"
+  },
+  "author": "marcelobbfonseca",
+  "license": "GPL3",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.7",
+    "@types/pg": "^8.11.0",
+    "@types/sequelize": "^4.28.20",
+    "nodemon": "^3.0.3",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.35.2"
+  }
+}

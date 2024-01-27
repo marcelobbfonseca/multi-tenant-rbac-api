@@ -1,0 +1,15 @@
+version: '3'
+services:
+  db:
+    container_name: inklusiva-pgdb
+    image: postgres:14-bullseye
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: inklusiva
+      POSTGRES_PASSWORD: 123456
+      PGPASSWORD: 123456
+    ports:
+      - "5432:5432"
+    volumes:
+      # - ./project-dump/:/var/www/html
+      - ./pgdb:/var/lib/postgresql/data
