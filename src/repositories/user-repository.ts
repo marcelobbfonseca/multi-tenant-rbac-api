@@ -1,5 +1,5 @@
 import SequelizePGDB from "../adapters/sequelize-pgdb";
-import { UserEntity } from "../models/user-model";
+import { UserEntity } from "../entities/user-entity";
 import { User } from "../adapters/sequelize-models";
 
 // create reference

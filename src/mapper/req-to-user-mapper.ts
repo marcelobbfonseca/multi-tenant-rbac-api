@@ -1,4 +1,4 @@
-import { UserEntity, UserParams } from "../models/user-model";
+import { UserEntity, UserParams } from "../entities/user-entity";
 
 export const requestToUserMapper = (params: UserParams): UserEntity => {
     const { email, password, name, superuser, confirmPassword }: UserParams = params;

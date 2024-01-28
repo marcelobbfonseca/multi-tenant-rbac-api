@@ -15,7 +15,7 @@ class SequelizePGDB {
 
     public static createInstance(): void {
         SequelizePGDB.instance = new Sequelize('inklusiva', 'postgres', '123456', {
-            host: 'db',
+            host: 'localhost',
             dialect: 'postgres',
             // logging: (...msg) => console.log(msg),
         });
