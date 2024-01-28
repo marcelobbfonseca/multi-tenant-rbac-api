@@ -128,6 +128,7 @@ export const initModels = (sequelize: Sequelize) => {
     });
 
     User.hasMany(Role, { foreignKey: 'user_id' });
+    User.belongsToMany(Tenant, { through: 'Role', foreignKey: 'user_id' });
     
     Tenant.hasMany(Role, { foreignKey: 'tenant_id' });
     

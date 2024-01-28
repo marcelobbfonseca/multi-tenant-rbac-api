@@ -19,6 +19,7 @@ export const createUsers: RequestHandler = async (req, res, next) => {
 export const getUsers: RequestHandler = async (req, res, next) => {
     
     const users = await getUsersRepositor();
+    
     res.status(200).json({ users });
 };
 
