@@ -13,3 +13,12 @@ services:
     volumes:
       # - ./project-dump/:/var/www/html
       - ./pgdb:/var/lib/postgresql/data
+  db-test:
+    image: postgres:14.10-alpine3.19
+    environment: 
+      POSTGRES_USER: postgres
+      POSTGRES_DB: inklusiva_test
+      POSTGRES_PASSWORD: 123456
+      PGPASSWORD: 123456
+    ports:
+      - 5433:5432

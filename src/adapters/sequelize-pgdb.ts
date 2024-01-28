@@ -12,12 +12,25 @@ class SequelizePGDB {
         }
         return SequelizePGDB.instance;
     }
-
+    public static async init(): Promise<void> {
+        SequelizePGDB.createInstance();
+        await SequelizePGDB.connect();
+    }
     public static createInstance(): void {
+        if (process.env['NODE_ENV'] === 'test'){
+            SequelizePGDB.instance = new Sequelize('inklusiva_test', 'postgres', '123456', {
+                host: 'localhost',
+                dialect: 'postgres',
+                port: 5433,
+                logging: (...msg) => {},
+            });
+            return;
+        }
+
         SequelizePGDB.instance = new Sequelize('inklusiva', 'postgres', '123456', {
             host: 'localhost',
             dialect: 'postgres',
-            // logging: (...msg) => console.log(msg),
+            logging: (...msg) => {},
         });
     }
 

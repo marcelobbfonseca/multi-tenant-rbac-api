@@ -3,10 +3,11 @@ import { Sequelize } from "sequelize";
 
 
 
+
 describe('SequelizePGDB', () => {
     let instance: Sequelize;
 
-    beforeEach(() => {
+    beforeEach( async () => {
         SequelizePGDB.createInstance();
         instance = SequelizePGDB.getInstance();
     });
@@ -20,4 +21,9 @@ describe('SequelizePGDB', () => {
         const user = await instance.models.User;
         expect(user).toBeDefined();
     });
+
+    afterEach( async () => {
+        await instance.drop();
+        await SequelizePGDB.disconnect();
+    })
 })

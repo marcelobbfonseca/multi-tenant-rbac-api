@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "tsc": "npx tsc ./src -w",
+    "tsc": "npx tsc -w",
     "start": "nodemon dist/app.js"
   },
   "author": "marcelobbfonseca",
