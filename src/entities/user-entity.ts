@@ -8,7 +8,6 @@ export interface UserParams {
     superuser: boolean;
 };
 
-
 export class UserEntity {
     public id?: number;
     public name: string;
@@ -25,3 +24,4 @@ export class UserEntity {
         this.superuser = superuser;
     }
 };
+

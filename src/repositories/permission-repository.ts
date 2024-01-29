@@ -2,10 +2,23 @@ import { Permission } from "../adapters/sequelize-models"
 
 type createRolePermissionsFunction = (roleName: string, roleId: number) => Promise<Permission[]>
 
-const ROLES = ['Reader', 'Editor', 'Admin'];
+interface permissionsTypes {
+    READER: string;
+    EDITOR: string;
+    ADMIN: string;
+}
 
+
+export const defaultPermissionTypes: permissionsTypes = {
+    READER: 'reader',
+    EDITOR: 'editor',
+    ADMIN: 'admin',
+}
 interface defaultPrivileges {
     [key: string]: string[];
+    reader: string[];
+    editor: string[];
+    admin: string[];
 }
 
 
@@ -19,10 +32,10 @@ export const createRolePermissions: createRolePermissionsFunction = async (roleN
     const permissions: Permission[] = [];
     
     if (roleName in privileges) {
-        privileges[roleName].forEach(async (privilege) => {
+        privileges[roleName].forEach(async (permissionName) => {
             const permission = await Permission.create({
                 role_id: roleId,
-                privilege: privilege
+                name: permissionName
             });
             permissions.push(permission)
         });

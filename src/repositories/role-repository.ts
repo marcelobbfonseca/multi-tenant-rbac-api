@@ -1,6 +1,8 @@
 import { Role } from "../adapters/sequelize-models"
+import { defaultPermissionTypes } from "./permission-repository";
 
 type getRoleByUserAndTenantFunction =  (userId: number, tenantId: number) => Promise<Role | null>
+type createUserRoleFunction = (userId: number, tenantId: number, name?: string) => Promise<Role>
 
 export const getRoleByUserAndTenantIds: getRoleByUserAndTenantFunction = async (userId, tenantId) => {
     
@@ -14,7 +16,7 @@ export const getRoleByUserAndTenantIds: getRoleByUserAndTenantFunction = async (
     return role;
 }
 
-export const createUserRole = (userId: number, tenantId: number, name='Reader'): Promise<Role> => {
+export const createUserRole: createUserRoleFunction = (userId, tenantId, name=defaultPermissionTypes.READER) => {
     
     const role = Role.create({
         user_id: userId,

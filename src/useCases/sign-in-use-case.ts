@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { getUserByEmail } from '../../repositories/user-repository';
-import { getRoleByUserAndTenantIds } from '../../repositories/role-repository';
+import { getUserByEmail } from '../repositories/user-repository';
+import { getRoleByUserAndTenantIds } from '../repositories/role-repository';
 
 export const signInUseCase = async (email: string, password: string, tenantId: number): Promise<string | boolean> => {
 

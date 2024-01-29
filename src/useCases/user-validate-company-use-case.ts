@@ -1,6 +1,6 @@
-import { userToUserModelMapper } from "../../mapper/user-to-user-model-mapper";
-import { getTenantByName, getTenantByUserId } from "../../repositories/tenant-repository";
-import { getUserByEmail } from "../../repositories/user-repository";
+import { userToUserModelMapper } from "../mapper/user-to-user-model-mapper";
+import { getTenantByName, getTenantByUserId } from "../repositories/tenant-repository";
+import { getUserByEmail } from "../repositories/user-repository";
 
 
 export const userValidateTenantUseCase = async (tenantName: string, email: string): Promise<number> => {

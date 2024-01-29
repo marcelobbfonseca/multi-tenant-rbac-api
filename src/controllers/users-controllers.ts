@@ -3,9 +3,9 @@ import { requestToUserMapper } from "../mapper/req-to-user-mapper";
 import { userModelToUserMapper } from "../mapper/user-model-to-user-mapper";
 import { getUsers as getUsersRepositor, createUser, getUserById, deleteUser, updateUser, getUserByEmail } from "../repositories/user-repository";
 import { UserParams } from "../entities/user-entity";
-import { signInUseCase } from "./usseCases/sign-in-use-case";
+import { signInUseCase } from "../useCases/sign-in-use-case";
 import { getTenantByName } from "../repositories/tenant-repository";
-import { userValidateTenantUseCase } from "./usseCases/user-validate-company-use-case";
+import { userValidateTenantUseCase } from "../useCases/user-validate-company-use-case";
 import { createUserRole } from "../repositories/role-repository";
 import { createRolePermissions } from "../repositories/permission-repository";
 
