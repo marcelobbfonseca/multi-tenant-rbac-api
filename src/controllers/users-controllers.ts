@@ -1,12 +1,21 @@
 import { RequestHandler } from "express";
 import { requestToUserMapper } from "../mapper/req-to-user-mapper";
 import { userModelToUserMapper } from "../mapper/user-model-to-user-mapper";
-import { getUsers as getUsersRepositor, createUser, getUserById, deleteUser, updateUser } from "../repositories/user-repository";
+import { getUsers as getUsersRepositor, createUser, getUserById, deleteUser, updateUser, getUserByEmail } from "../repositories/user-repository";
 import { UserParams } from "../entities/user-entity";
+import { signInUseCase } from "./usseCases/sign-in-use-case";
+import { getTenantByName } from "../repositories/tenant-repository";
+import { userValidateTenantUseCase } from "./usseCases/user-validate-company-use-case";
+import { createUserRole } from "../repositories/role-repository";
+import { createRolePermissions } from "../repositories/permission-repository";
 
 
 export const createUsers: RequestHandler = async (req, res, next) => {
     
+    const { name, email, password, confirmPassword} = req.body;
+
+    if(password !== confirmPassword) res.status(400).json({message: 'Passwords do not match.'});
+
     const user = requestToUserMapper(req.body);
     
     const userModel = await createUser(user);
@@ -56,14 +65,50 @@ export const deleteUsers: RequestHandler = async (req, res, next) => {
     else res.status(500).json({error: 'unable to delete!'});
 };
 
-export const signInUser: RequestHandler = (req, res, next) => {
-    res.json({message: 'TODO!'});
+export const signInUser: RequestHandler = async (req, res, next) => {
+    
+    const { tenantName, email, password } = req.body;
+    
+    const tenantId = await userValidateTenantUseCase(tenantName, email);
+
+    if(tenantId === -1) res.status(403).json({message: 'Forbbiden.'});
+
+    const token = await signInUseCase(email, password, tenantId);
+
+    if(token) res.status(200).json({token});
+    res.status(400).json({message: 'Authentication failed.'});
 };
 
 export const signOutUser: RequestHandler = (req, res, next) => {
+    // kill refresh token
     res.json({message: 'TODO!'});
 };
 
-export const signUpUser: RequestHandler = (req, res, next) => {
-    res.json({message: 'TODO!'});
+export const signUpUser: RequestHandler = async (req, res, next) => {
+
+    const { name, email, password, tenantName, confirmPassword } = req.body;
+
+    const tenant = await getTenantByName(tenantName);
+
+    if(!tenant) {
+        res.status(400).json({message: 'Tenant does not exists.'});
+        return;
+    }
+
+    if(password !== confirmPassword) {
+        res.status(400).json({message: 'Passwords do not match.'});
+        return;
+    }
+    
+    const params: UserParams = { email, password, name, superuser: false };
+
+    const user = requestToUserMapper(params);
+    
+    const userModel = await createUser(user);
+
+    const role = await createUserRole(userModel.id, tenant.id);
+
+    await createRolePermissions(role.name, role.id);
+    
+    res.status(201).json({message: 'Sign up successfully.'});
 };

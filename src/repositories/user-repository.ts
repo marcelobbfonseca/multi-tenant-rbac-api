@@ -7,6 +7,7 @@ export type getUserByIdFunction = (id: number) => Promise<User | null>;
 export type createUserFunction = (user: UserEntity) => Promise<User>;
 export type updateUserFunction = (user: UserEntity) => Promise<boolean>;
 export type deleteUserFunction = (id: number) => Promise<boolean>;
+export type getUserByEmailFunction = (email: string) => Promise<User | null>;
 
 export const getUsers: getUsersFunction = async () => {
     
@@ -14,6 +15,13 @@ export const getUsers: getUsersFunction = async () => {
     
     return users;
 }
+
+export const getUserByEmail: getUserByEmailFunction = async (email) => {
+
+    const user = await User.findOne({where: {email}});
+    
+    return user; 
+ }
 
 export const getUserById: getUserByIdFunction = async (id) => {
     
