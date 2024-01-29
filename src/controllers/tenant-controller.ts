@@ -3,6 +3,7 @@ import { requestToTenantMapper } from "../mapper/req-to-tenant-mapper";
 import { createTenant, getTenantById, getTenants as getTenantsRepository, updateTenant as updateTenantRepository, deleteTenant as deleteTenantRepository } from "../repositories/tenant-repository";
 import { tenantModelToTenantMapper } from "../mapper/tenant-model-to-tenant.mapper";
 import { TenantParams } from "../entities/tenant-entity";
+import { createTenantAdminUsecase } from "../useCases/create-tenant-admin-use-case";
 
 
 
@@ -12,9 +13,11 @@ export const createTenants: RequestHandler = async (req, res) => {
 
     const tenantModel = await createTenant(tenant);
 
+    const admin = await createTenantAdminUsecase(tenantModel.id, tenantModel.name);
+    
     const createdTenant = tenantModelToTenantMapper(tenantModel);
 
-    res.status(201).json({ message: 'user created!', tenant: createdTenant });
+    res.status(201).json({ message: 'Tenant created!', tenant: createdTenant, admin });
 };
 
 export const getTenants: RequestHandler = async (req, res) => {
