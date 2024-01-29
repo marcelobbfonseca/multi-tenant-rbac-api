@@ -1,42 +1,28 @@
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { getUserByEmail } from '../repositories/user-repository';
 import { getRoleByUserAndTenantIds } from '../repositories/role-repository';
+import { signJWTAccessToken, signJWTRefreshToken } from '../services/jwt-services';
 
-export const signInUseCase = async (email: string, password: string, tenantId: number): Promise<string | boolean> => {
+type SignInUseCase = (email: string, password: string, tenantId: number) => Promise<{ accessToken?: string; refreshToken?: string; }>;
+
+export const signInUseCase: SignInUseCase  = async (email: string, password: string, tenantId: number) => {
 
     const user = await getUserByEmail(email);
 
-    if(!user) return false;
+    if(!user) return { accessToken: undefined, refreshToken: undefined };
 
     const role = await getRoleByUserAndTenantIds(user.id, tenantId);
 
-    if(!role) return false;
+    if(!role) return { accessToken: undefined, refreshToken: undefined };
 
     bcrypt.compare(password, user.password, (err, success) => {
       if(success) {
-        return signJWTtoken(email, user.id, role.id, role.name);
+        const accessToken = signJWTAccessToken(email, user.id, role.id, role.name);
+        const refreshToken = signJWTRefreshToken(email, user.id, role.id, role.name);
+        return { accessToken, refreshToken };
       } 
     });
 
-    return false;
+    return { accessToken: undefined, refreshToken: undefined };
 
-}
-
-const signJWTtoken = (email: string, userId: number, roleId: number, roleName: string): string => {
-    const cert = process.env.JWT_SECRET || 'dev_key_kx92js82ys8279shagq12ba';
-
-    const token = jwt.sign({
-        email: email,
-        id: userId,
-        roleId
-    }, 
-    cert, 
-    { 
-        expiresIn: '1h',
-        algorithm: 'HS256',
-        issuer: roleName,
-    });
-
-    return token;
 }

@@ -4,13 +4,14 @@ import apiRoutes from './routes/index';
 import { errorHandler } from './routes/errorHandler';
 import SequelizePGDB from './adapters/sequelize-pgdb';
 import { json } from 'body-parser';
+import cookieParser from 'cookie-parser';
 
 
 async function main(): Promise<Express> {
     await SequelizePGDB.init();
 
     const app = express();
-
+    app.use(cookieParser());
     app.use(json());
 
     app.use('/api/v1', apiRoutes);
