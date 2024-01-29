@@ -43,3 +43,14 @@ export const createRolePermissions: createRolePermissionsFunction = async (roleN
     
     return permissions;
 }
+
+export const getRolePermissions = (roleId: number) => {
+    
+    const permissions = Permission.findAll({
+        where: {
+            role_id: roleId,
+        }
+    });
+
+    return permissions;
+}

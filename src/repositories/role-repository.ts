@@ -26,3 +26,10 @@ export const createUserRole: createUserRoleFunction = (userId, tenantId, name=de
 
     return role;
 }
+
+export const getRoleById = async (id: number): Promise<Role | null>  => {
+    
+    const role = Role.findByPk(id);
+
+    return role;
+}

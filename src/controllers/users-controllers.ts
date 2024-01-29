@@ -8,13 +8,24 @@ import { getTenantByName } from "../repositories/tenant-repository";
 import { userValidateTenantUseCase } from "../useCases/user-validate-company-use-case";
 import { createUserRole } from "../repositories/role-repository";
 import { createRolePermissions } from "../repositories/permission-repository";
+import { canAccessUseCase } from "../useCases/access-use-case";
+
 
 
 export const createUsers: RequestHandler = async (req, res, next) => {
+    //@ts-ignore
+    const { authenticatedUser , tenant } = req;
+    const canAccess = await canAccessUseCase(authenticatedUser,'user', 'create', tenant);
+    if (!canAccess) {
+        res.status(403).json({message: 'Forbiden.'});
+        return;
+    }
     
     const { name, email, password, confirmPassword} = req.body;
 
-    if(password !== confirmPassword) res.status(400).json({message: 'Passwords do not match.'});
+    if(password !== confirmPassword) {
+        res.status(400).json({message: 'Passwords do not match.'});
+    }
 
     const user = requestToUserMapper(req.body);
     
@@ -73,14 +84,27 @@ export const signInUser: RequestHandler = async (req, res, next) => {
 
     if(tenantId === -1) res.status(403).json({message: 'Forbbiden.'});
 
-    const token = await signInUseCase(email, password, tenantId);
+    const { accessToken, refreshToken } = await signInUseCase(email, password, tenantId);
 
-    if(token) res.status(200).json({token});
-    res.status(400).json({message: 'Authentication failed.'});
+    if(!accessToken || !refreshToken) res.status(400).json({message: 'Authentication failed.'});
+      
+
+    res.status(200).json({message: 'Authenticated.', accessToken });
 };
 
 export const signOutUser: RequestHandler = (req, res, next) => {
-    // kill refresh token
+    // @ts-ignore
+    const { user } = req;
+
+    // res.cookie('accessToken', '', {
+    //     maxAge: 0,
+    //     httpOnly: true,
+    // });
+    // res.cookie('refreshToken', '', {
+    //     maxAge: 0,
+    //     httpOnly: true,
+    // });
+
     res.json({message: 'TODO!'});
 };
 

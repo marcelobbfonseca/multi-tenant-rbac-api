@@ -5,16 +5,18 @@ export interface TokenPayloadInterface extends JwtPayload {
     email: string;
     id: number;
     roleId: number;
+    tenantId: number;
 }
 
 
-export const signJWTAccessToken = (email: string, userId: number, roleId: number, roleName: string): string => {
+export const signJWTAccessToken = (email: string, userId: number, roleId: number, roleName: string, tenantId: number): string => {
     const cert = process.env.JWT_SECRET || 'dev_key_kx92js82ys8279shagq12ba';
 
     const token = jwt.sign({
         email: email,
         id: userId,
-        roleId
+        roleId,
+        tenantId
     }, 
     cert, 
     { 
@@ -26,13 +28,11 @@ export const signJWTAccessToken = (email: string, userId: number, roleId: number
     return token;
 }
 
-export const signJWTRefreshToken = (email: string, userId: number, roleId: number, roleName: string) => {
+export const signJWTRefreshToken = (userId: number) => {
     const cert = process.env.JWT_SECRET || 'dev_key_kx92js82ys8279shagq12ba';
 
     const token = jwt.sign({
-        email,
         id: userId,
-        roleId
     }, 
     cert, 
     { 

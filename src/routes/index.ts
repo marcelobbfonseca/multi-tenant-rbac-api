@@ -2,8 +2,7 @@ import { Router } from 'express';
 import userRouter from './users';
 import tenantRouter from './tenants';
 import { signInUser, signUpUser } from '../controllers/users-controllers';
-import { authorize } from './middlewares/authorize';
-
+import { auth } from './middlewares/auth';
 
 
 const apiRoutes = Router(); 
@@ -12,8 +11,8 @@ apiRoutes.post('/sign-in', signInUser);
 
 apiRoutes.post('/sign-up', signUpUser);
 
-apiRoutes.use('/users',authorize, userRouter);
+apiRoutes.use('/users',auth, userRouter);
 
-apiRoutes.use('/tenants',authorize, tenantRouter);
+apiRoutes.use('/tenants',auth, tenantRouter);
 
 export default apiRoutes;

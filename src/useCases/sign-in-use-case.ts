@@ -17,8 +17,8 @@ export const signInUseCase: SignInUseCase  = async (email: string, password: str
 
     bcrypt.compare(password, user.password, (err, success) => {
       if(success) {
-        const accessToken = signJWTAccessToken(email, user.id, role.id, role.name);
-        const refreshToken = signJWTRefreshToken(email, user.id, role.id, role.name);
+        const accessToken = signJWTAccessToken(email, user.id, role.id, role.name, tenantId);
+        const refreshToken = signJWTRefreshToken(user.id);
         return { accessToken, refreshToken };
       } 
     });

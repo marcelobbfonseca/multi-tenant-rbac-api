@@ -6,7 +6,6 @@ import { TenantParams } from "../entities/tenant-entity";
 import { createTenantAdminUsecase } from "../useCases/create-tenant-admin-use-case";
 
 
-
 export const createTenants: RequestHandler = async (req, res) => {
 
     const tenant = requestToTenantMapper(req.body);
