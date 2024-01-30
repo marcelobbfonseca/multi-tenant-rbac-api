@@ -2,6 +2,7 @@ import { getRolePermissions } from "../repositories/permission-repository";
 import { getPermittedData } from "../repositories/permitted-data-repository";
 import { getRoleById } from "../repositories/role-repository";
 import { getTenantById } from "../repositories/tenant-repository";
+import { getUserById } from "../repositories/user-repository";
 import { TokenPayloadInterface } from "../services/jwt-services"
 
 export type actionType = 'create' | 'update' | 'read' | 'delete';
@@ -12,6 +13,9 @@ type canAccessUseCaseFunction = (payload: TokenPayloadInterface, resource: strin
 export const canAccessUseCase: canAccessUseCaseFunction = async (payload, resource, action, tenantName) => {
     
     const { email, id, iss, roleId, tenantId } = payload;
+
+    const user = await getUserById(id);
+    if (user?.superuser) return true;
 
     const role = await getRoleById(roleId);
     if(!role) return false;

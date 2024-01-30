@@ -13,9 +13,6 @@ export const auth: RequestHandler = (req, res, next) => {
 
         const decoded = <TokenPayloadInterface>jwt.verify(token, jwtSecret);
 
-        console.log({baseurl: req.baseUrl, path: req.path });
-
-
         // @ts-ignore
         req.authenticatedUser = decoded;
 

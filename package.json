@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test:one": "jest -t \"should create a new tenant and return 201\"",
     "tsc": "npx tsc -w",
     "start": "nodemon dist/app.js"
   },

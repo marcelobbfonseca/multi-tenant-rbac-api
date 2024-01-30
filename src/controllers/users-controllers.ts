@@ -21,11 +21,8 @@ export const createUsers: RequestHandler = async (req, res, next) => {
         return;
     }
     
-    const { name, email, password, confirmPassword} = req.body;
+    const { name, email, password } = req.body;
 
-    if(password !== confirmPassword) {
-        res.status(400).json({message: 'Passwords do not match.'});
-    }
 
     const user = requestToUserMapper(req.body);
     
