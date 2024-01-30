@@ -13,6 +13,4 @@ router.put('/:id', updateUsers);
 
 router.delete('/:id', deleteUsers);
 
-router.get('/sign-out', signOutUser);
-
 export default router;

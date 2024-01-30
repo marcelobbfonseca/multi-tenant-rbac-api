@@ -86,31 +86,12 @@ export const signInUser: RequestHandler = async (req, res, next) => {
 
     const { accessToken, refreshToken } = await signInUseCase(email, password, tenantId);
 
-    console.log({ accessToken, refreshToken });
-
     if(!accessToken || !refreshToken) {
         res.status(400).json({message: 'Authentication failed.'});
         return;
     }
-      
 
     res.status(200).json({message: 'Authenticated.', accessToken });
-};
-
-export const signOutUser: RequestHandler = (req, res, next) => {
-    // @ts-ignore
-    const { user } = req;
-
-    // res.cookie('accessToken', '', {
-    //     maxAge: 0,
-    //     httpOnly: true,
-    // });
-    // res.cookie('refreshToken', '', {
-    //     maxAge: 0,
-    //     httpOnly: true,
-    // });
-
-    res.json({message: 'TODO!'});
 };
 
 export const signUpUser: RequestHandler = async (req, res, next) => {
@@ -130,7 +111,7 @@ export const signUpUser: RequestHandler = async (req, res, next) => {
     }
     
     const params: UserParams = { email, password, name, superuser: false };
-
+    
     const user = requestToUserMapper(params);
     
     const userModel = await createUser(user);
