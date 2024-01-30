@@ -59,16 +59,17 @@ export const deleteTenant: deleteTenantFunction = async (id) => {
     return false;
 }
     
-export const getTenantByUserId = (userId: number): Promise<Tenant | null> => {
+export const getTenantByUserId = async (userId: number): Promise<Tenant | null> => {
 
-    const tenant = Tenant.findOne({
-        include: {
-            model: Role,
-            where: {
-            userId: userId
-            }
+    const role = await Role.findOne({
+        where: {
+            user_id: userId,
         }
     });
+
+    if (!role) return null;
+
+    const tenant = await Tenant.findByPk(role.tenant_id);
 
     return tenant;
 }

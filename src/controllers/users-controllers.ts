@@ -78,12 +78,20 @@ export const signInUser: RequestHandler = async (req, res, next) => {
     const { tenantName, email, password } = req.body;
     
     const tenantId = await userValidateTenantUseCase(tenantName, email);
-
-    if(tenantId === -1) res.status(403).json({message: 'Forbbiden.'});
+    
+    if(tenantId === -1){
+        res.status(403).json({message: 'Forbbiden.'});
+        return;
+    } 
 
     const { accessToken, refreshToken } = await signInUseCase(email, password, tenantId);
 
-    if(!accessToken || !refreshToken) res.status(400).json({message: 'Authentication failed.'});
+    console.log({ accessToken, refreshToken });
+
+    if(!accessToken || !refreshToken) {
+        res.status(400).json({message: 'Authentication failed.'});
+        return;
+    }
       
 
     res.status(200).json({message: 'Authenticated.', accessToken });
