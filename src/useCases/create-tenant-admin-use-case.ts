@@ -3,7 +3,7 @@ import { requestToUserMapper } from "../mapper/req-to-user-mapper";
 import { createUser } from "../repositories/user-repository";
 import { createUserRole } from "../repositories/role-repository";
 import { defaultPermissionTypes } from "../repositories/permission-repository";
-import { generateRandomString } from "../services/randomString";
+import { generateRandomString } from "../services/strings-service";
 
 
 export const createTenantAdminUsecase = async (tenantId: number,tenantName: string) => {

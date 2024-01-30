@@ -1,7 +1,7 @@
-import { Permission } from "../adapters/sequelize-models"
+import { Permission, PermittedData } from "../adapters/sequelize-models"
 
 type createRolePermissionsFunction = (roleName: string, roleId: number) => Promise<Permission[]>
-
+type createPermissionFunction = (roleId: number, name: string, permittedDataNames: string[]) => Promise<{ permission: Permission, permittedDatas: PermittedData[] }>
 interface permissionsTypes {
     READER: string;
     EDITOR: string;
@@ -39,7 +39,7 @@ export const createRolePermissions: createRolePermissionsFunction = async (roleN
             });
             permissions.push(permission)
         });
-    }
+    } 
     
     return permissions;
 }
@@ -54,3 +54,19 @@ export const getRolePermissions = (roleId: number) => {
 
     return permissions;
 }
+
+export const createPermission: createPermissionFunction = async (roleId, name, permittedDataNames) => {
+
+    const permission = await Permission.create({
+        role_id: roleId,
+        name: name,
+    });
+    const permittedDatas: PermittedData[] = [];
+    permittedDataNames.forEach(async (dataName) => {
+        const permittedData = await PermittedData.create({tableName: dataName, permission_id: permission.id});
+        permittedDatas.push(permittedData);
+    });
+
+    return { permission, permittedDatas };
+}
+    

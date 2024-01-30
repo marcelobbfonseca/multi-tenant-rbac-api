@@ -1,4 +1,4 @@
-import { Role } from "../adapters/sequelize-models"
+import { Permission, PermittedData, Role } from "../adapters/sequelize-models"
 import { defaultPermissionTypes } from "./permission-repository";
 
 type getRoleByUserAndTenantFunction =  (userId: number, tenantId: number) => Promise<Role | null>
@@ -21,7 +21,7 @@ export const createUserRole: createUserRoleFunction = (userId, tenantId, name=de
     const role = Role.create({
         user_id: userId,
         tenant_id: tenantId,
-        name: name
+        name: name,
     });
 
     return role;
@@ -32,4 +32,16 @@ export const getRoleById = async (id: number): Promise<Role | null>  => {
     const role = Role.findByPk(id);
 
     return role;
+}
+
+export const getTenantRoles = async (tenantId: number): Promise<Role[]> => {
+
+    const roles = await Role.findAll({
+        where: {
+            tenant_id: tenantId
+        },
+        include: [Permission, PermittedData]
+    });
+
+    return roles; 
 }
