@@ -3,10 +3,10 @@ import request from 'supertest';
 import { Express } from 'express';
 import SequelizePGDB from '../src/adapters/sequelize-pgdb';
 import { User } from '../src/adapters/sequelize-models';
-import exp from 'constants';
 import { Sequelize } from 'sequelize';
 import { signJWTAccessToken } from '../src/services/jwt-services';
 
+jest.useFakeTimers();
 
 describe('Routes /api/v1/users', () => {
    let app: Express;

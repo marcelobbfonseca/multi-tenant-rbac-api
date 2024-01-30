@@ -4,10 +4,11 @@ import { assignPermission } from "../controllers/permissions-controllers";
 
 const router = Router();
 
-router.get('/', getRoles);
+router.get('/:tenantName', getRoles);
 
-router.post('/', assignRole);
+router.post('/:tenantName', assignRole);
 
 router.post('/:roleId/permissions', assignPermission);
+
 
 export default router;

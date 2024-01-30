@@ -16,6 +16,6 @@ apiRoutes.use('/users', auth, userRouter);
 
 apiRoutes.use('/tenants', auth, tenantRouter);
 
-apiRoutes.get('/tenants/:name/roles', auth, roleRouter);
+apiRoutes.use('/roles', auth, roleRouter);
 
 export default apiRoutes;

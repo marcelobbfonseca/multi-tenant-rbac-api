@@ -23,7 +23,7 @@ describe('API auth access', () => {
     test('should signin and return 200 OK with accessToken', async () => {
         const tenant = await Tenant.create({ name: 'Company', description: 'foo bar' });
         const user = await User.create({ name: 'superadmin', email: 'email@email', password: 'secret123' });
-        const role = await Role.create({ user_id: user.id, tenant_id: tenant.id, name: 'admin' });
+        await Role.create({ user_id: user.id, tenant_id: tenant.id, name: 'admin' });
 
         const res = await request(app)
             .post('/api/v1/sign-in')
@@ -41,5 +41,9 @@ describe('API auth access', () => {
 
         expect(res.status).toBe(201);
         expect(res.body.message).toBe('Sign up successfully.');
+    });
+
+    afterEach(() => {
+      SequelizePGDB.disconnect();
     });
 });

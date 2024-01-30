@@ -40,7 +40,18 @@ export const getTenantRoles = async (tenantId: number): Promise<Role[]> => {
         where: {
             tenant_id: tenantId
         },
-        include: [Permission, PermittedData]
+        // include: [Permission]
+    });
+    roles.forEach( async (role) => {
+
+        const permissions = await Permission.findAll({
+            where: {
+                role_id: role.id
+            },
+            include: PermittedData
+        });
+        //@ts-ignore
+        role.permissions = permissions;
     });
 
     return roles; 

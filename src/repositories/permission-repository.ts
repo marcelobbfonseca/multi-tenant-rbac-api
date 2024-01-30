@@ -63,7 +63,11 @@ export const createPermission: createPermissionFunction = async (roleId, name, p
     });
     const permittedDatas: PermittedData[] = [];
     permittedDataNames.forEach(async (dataName) => {
-        const permittedData = await PermittedData.create({tableName: dataName, permission_id: permission.id});
+        const permittedData = await PermittedData.create({
+            tableName: dataName, 
+            permission_id: permission.id,
+            attributeName: ''
+        });
         permittedDatas.push(permittedData);
     });
 
